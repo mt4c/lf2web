@@ -3,7 +3,7 @@ const CIPHER = Buffer.from("odBearBecauseHeIsVeryGoodSiuHungIsAGo")
 
 class dataDecrypter {
     encrypt(data) {
-
+        throw new Error('not implemented')
     }
 
     /**
