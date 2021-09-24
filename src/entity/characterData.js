@@ -7,6 +7,7 @@ const BMP_FILE_VALUE_REGEXP = '(?<path>.*)\\s*w:\\s*(?<width>\\d+)\\s*h:\\s*(?<h
 
 const FRAME_BASE_REGEXP = '(?<id>\\d+)\\s*(?<type>\\S+)'
 const FRAME_DATA_REGEXP = '(?<key>[^:\\s]+):\\s*(?<value>\\d+)'
+const FRAME_SOUND_REGEXP = 'sound:\\s*(?<path>.+)\\n'
 const FRAME_SUB_DATA_REGEXP = '\\s(?<name>\\S+):(?<content>(?:.|\\n)*)\\1_end:'
 
 class characterData extends entityData {
@@ -27,7 +28,15 @@ class characterData extends entityData {
                 } else if (key.startsWith('file')) {
                     const { id_start, id_end } = key.match(new RegExp(BMP_FILE_NAME_REGEXP)).groups
                     const { path, width, height, row, col } = value.match(new RegExp(BMP_FILE_VALUE_REGEXP)).groups
-                    char.img.files.push({ id_start, id_end, path, width, height, row, col })
+                    char.img.files.push({
+                        id_start: Number.parseInt(id_start, 10),
+                        id_end: Number.parseInt(id_end, 10),
+                        path,
+                        width: Number.parseInt(width, 10),
+                        height: Number.parseInt(height, 10),
+                        row: Number.parseInt(row, 10),
+                        col: Number.parseInt(col, 10)
+                    })
                 } else {
                     throw new Error(`unknown bmp attribute: [${key.trim()}]`)
                 }
@@ -47,6 +56,12 @@ class characterData extends entityData {
         while (result = dataReg.exec(lines[1])) {
             const { key, value } = result.groups
             frame[key.trim()] = Number.parseInt(value, 10)
+        }
+
+        const soundReg = new RegExp(FRAME_SOUND_REGEXP)
+        if (result = soundReg.exec(frameData)) {
+            const path = result.groups.path.trim()
+            frame.sound = path
         }
 
         const subDataReg = new RegExp(FRAME_SUB_DATA_REGEXP, 'g')
