@@ -1,10 +1,10 @@
-const { entity } = require('./entity')
+const { entityData } = require('./entityData')
 
 const BLOCK_REGEXP = '<(?<name>[^<>]+)(?:_begin)?>(?<content>[^<>]*)<\\1_end>'
 const BMP_FILE_NAME_REGEXP = 'file\\((?<id_start>\\d+)-(?<id_end>\\d+)\\):'
 const BMP_FILE_VALUE_REGEXP = '(?<path>.*)\\s*w:\\s*(?<width>\\d+)\\s*h:\\s*(?<height>\\d+)\\s*row:\\s*(?<row>\\d+)\\s*col:\\s*(?<col>\\d+)'
 
-class character extends entity {
+class characterData extends entityData {
     static parseBmp(char, bmpData) {
         bmpData.split('\n')
             .map(line => line.trim())
@@ -35,7 +35,7 @@ class character extends entity {
     }
 
     static parse(data) {
-        const char = new character()
+        const char = new characterData()
 
         const reg = new RegExp(BLOCK_REGEXP, 'g')
         let result
@@ -66,4 +66,4 @@ class character extends entity {
     }
 }
 
-module.exports = { character }
+module.exports = { characterData }

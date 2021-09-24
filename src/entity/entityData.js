@@ -1,7 +1,7 @@
-class entity {
+class entityData {
     static parse(data) {
         throw new Error('not implemented')
     }
 }
 
-module.exports = { entity }
+module.exports = { entityData }
