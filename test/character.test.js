@@ -6,7 +6,7 @@ const expect = chai.expect
 const { character } = require('../src/entity/character')
 
 describe('character', () => {
-    it('template', async () => {
+    it.only('template', async () => {
         const data = (await fs.readFile(path.resolve(__dirname, 'data/template.txt'))).toString()
         const char = character.parse(data)
         console.log(char)
