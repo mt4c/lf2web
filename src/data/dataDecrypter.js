@@ -2,7 +2,7 @@ const SKIP_BYTES = 123
 const CIPHER = Buffer.from("odBearBecauseHeIsVeryGoodSiuHungIsAGo")
 
 class dataDecrypter {
-    encrypt(data) {
+    static encrypt(data) {
         throw new Error('not implemented')
     }
 
@@ -10,12 +10,12 @@ class dataDecrypter {
      * decrypt data
      * @param {buffer} data 
      */
-    decrypt(data) {
-        const output = Buffer.alloc(data.length - 123)
+    static decrypt(data) {
+        const output = Buffer.alloc(data.length - SKIP_BYTES)
 
-        for (let i = 123; i < data.length; i++) {
-            const cipherByte = CIPHER[(i - 123) % CIPHER.length]
-            output[i - 123] = (data[i] - cipherByte)
+        for (let i = SKIP_BYTES; i < data.length; i++) {
+            const cipherByte = CIPHER[(i - SKIP_BYTES) % CIPHER.length]
+            output[i - SKIP_BYTES] = (data[i] - cipherByte)
         }
 
         return output.toString()
