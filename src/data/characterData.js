@@ -128,6 +128,7 @@ class characterData extends entityData {
                     height: fileData.height,
                     row: fileData.row,
                     col: fileData.col,
+                    count: fileData.id_end - fileData.id_start
                 }
             }
         })
