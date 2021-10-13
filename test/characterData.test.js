@@ -3,7 +3,7 @@ const path = require('path')
 const chai = require('chai')
 chai.should()
 const expect = chai.expect
-const { characterData } = require('../src/entity/characterData')
+const { characterData } = require('../src/data/characterData')
 
 describe('character', () => {
     it('template', async () => {
