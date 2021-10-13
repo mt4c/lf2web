@@ -10,5 +10,6 @@ window.doTest = async function () {
     const response = await window.fetch('resources/data/template.dat')
     const encrypted = Buffer.from(await response.arrayBuffer())
     const decrypted = dataDecrypter.decrypt(encrypted)
-    console.log(decrypted)
+    const templateData = characterData.parse(decrypted)
+    templateData.init()
 }

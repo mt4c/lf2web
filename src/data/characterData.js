@@ -1,4 +1,4 @@
-const global = require('../util/global').get()
+const global = require('../util/global')
 const { entityData } = require('./entityData')
 
 const BLOCK_REGEXP = '<(?<name>[^<>]+)(?:_begin)?>(?<content>[^<>]*)<\\1_end>'
@@ -117,9 +117,19 @@ class characterData extends entityData {
     }
 
     loadResources() {
-        this.img.files.forEach(filename => {
-            const fullname = 'resources/' + filename
-            global.loadImage(fullname)
+        this.img.files.forEach(fileData => {
+            const fullname = 'resources/' + fileData.path
+            const window = global.get()
+            const imgData = global.get().loadImage(fullname)
+            if (!window.imgData) {
+                window.imgData = {
+                    img: imgData,
+                    width: fileData.width,
+                    height: fileData.height,
+                    row: fileData.row,
+                    col: fileData.col,
+                }
+            }
         })
     }
 }
