@@ -1,4 +1,4 @@
-const global = require('../util/global')
+const p5Util = require('../util/p5util')
 const { entityData } = require('./entityData')
 
 const BLOCK_REGEXP = '<(?<name>[^<>]+)(?:_begin)?>(?<content>[^<>]*)<\\1_end>'
@@ -112,26 +112,32 @@ class characterData extends entityData {
         this.frames = []
     }
 
-    init() {
-        this.loadResources()
+    async init() {
+        await this.loadResources()
     }
 
-    loadResources() {
-        this.img.files.forEach(fileData => {
+    async loadResources() {
+        for (const fileData of this.img.files) {
             const fullname = 'resources/' + fileData.path
-            const window = global.get()
-            const imgData = global.get().loadImage(fullname)
-            if (!window.imgData) {
-                window.imgData = {
-                    img: imgData,
-                    width: fileData.width,
-                    height: fileData.height,
-                    row: fileData.row,
-                    col: fileData.col,
-                    count: fileData.id_end - fileData.id_start
-                }
-            }
-        })
+            fileData.img = await p5Util.loadImage(fullname)
+            p5Util.setTransparent(fileData.img)
+        }
+    }
+
+    getImage(id) {
+        const fileData = this.img.files.find(fileData => fileData.id_start <= id && fileData.id_end >= id)
+        const innerId = id - fileData.id_start
+
+        const row = Math.floor(innerId / fileData.col)
+        const col = innerId % fileData.col
+
+        return {
+            img: fileData.img,
+            x: col * fileData.width + col,  // add for seperator
+            y: row * fileData.height + row, // add for seperator
+            width: fileData.width,
+            height: fileData.height
+        }
     }
 }
 

@@ -12,19 +12,16 @@ function draw() {
 }
 
 function testDraw() {
-    if (window.imgData) {
-        const data = window.imgData
-        const id = frameCount % data.count
-
-        const row = Math.floor(id / data.row)
-        const col = id % data.col
-
+    if (window.data) {
+        const maxId = Math.max(...window.data.img.files.map(item => item.id_end))
+        const currentId = frameCount % maxId + 1
+        const imgData = window.data.getImage(currentId)
         image(
-            data.img,
+            imgData.img,
             100, 100,
-            data.width, data.height,
-            col * data.width + col, row * data.height + row,
-            data.width, data.height
+            imgData.width, imgData.height,
+            imgData.x, imgData.y,
+            imgData.width, imgData.height
         )
     }
 }

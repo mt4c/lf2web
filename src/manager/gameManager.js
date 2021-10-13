@@ -1,8 +1,8 @@
-const global = require('../util/global')
+const p5Util = require('../util/p5util')
 
 class GameManager {
-    constructor(globalObj) {
-        global.set(globalObj)
+    constructor(window) {
+        p5Util.setWindow(window)
     }
 }
 
